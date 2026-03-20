@@ -31,7 +31,7 @@ To run this project locally, you will need Node.js and a PostgreSQL connection s
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/VidhuVi/Cymonic.git
+   git clone https://github.com/VidhuVi/Cymonic_Trial_Antigravity.git
    cd Cymonic
    ```
 
