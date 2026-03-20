@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Transcript {
+  id           String              @id @default(uuid())
+  title        String
+  filename     String
+  date         DateTime            @default(now())
+  duration     Int?                // duration in seconds
+  wordCount    Int
+  speakerCount Int
+  content      String
+  sentiment    String?             // overall sentiment
+  
+  decisions    Decision[]
+  actionItems  ActionItem[]
+  segments     TranscriptSegment[]
+  
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+}
+
+model TranscriptSegment {
+  id           String     @id @default(uuid())
+  transcriptId String
+  transcript   Transcript @relation(fields: [transcriptId], references: [id], onDelete: Cascade)
+  speaker      String
+  startTime    Float?     
+  endTime      Float?     
+  text         String
+  sentiment    String?    
+}
+
+model Decision {
+  id           String     @id @default(uuid())
+  transcriptId String
+  transcript   Transcript @relation(fields: [transcriptId], references: [id], onDelete: Cascade)
+  content      String
+}
+
+model ActionItem {
+  id           String     @id @default(uuid())
+  transcriptId String
+  transcript   Transcript @relation(fields: [transcriptId], references: [id], onDelete: Cascade)
+  assignee     String?
+  task         String
+  dueDate      String?
+  isCompleted  Boolean    @default(false)
+}
